@@ -15,21 +15,35 @@ I've generated a random 4 digit number for you.\n
 Let's play a bulls and cows game.\n
 {separator}\n""")
    
-    def digitSelection(rangeLow: int, rangeHigh: int) -> int:
-        digit = random.choice(range(rangeLow, rangeHigh))
-        return digit
+    def duplicateCheck(checkedNumber: list) -> bool:
+        randomNumber = False
+        while randomNumber is False:
+            for i in range (0, 4):
+                if checkedNumber.count(checkedNumber[i]) > 1:
+                    randomNumber is False
+                    break
+                elif checkedNumber.count(checkedNumber[i]) == 1:
+                    randomNumber is True
+        return randomNumber
 
-    def numberGeneration() -> list:
-        number = [0, 0, 0, 0]
-        number[0] = digitSelection(1, 10)
-        number[1] = digitSelection(0, 10)
-        number[2] = digitSelection(0, 10)
-        number[3] = digitSelection(0, 10)
-        return number
+    def digitSelection() -> list:
+        numberOK = False
+        while numberOK is False:
+            FourDigits = str(random.choice(range(1000, 9999)))
+            FourDigitsToList = list(FourDigits) 
+            numberOK == duplicateCheck(FourDigitsToList)
+        return FourDigitsToList
     
-    def defineNumber():
-        guess = input(f"Enter a number:\n{separator}\n>>> ")
-        guessList = list(guess)
+    def defineNumber() -> list:
+        numberIncorrect = True
+        while numberIncorrect:
+            guess = input(f"Enter a number:\n{separator}\n>>> ")
+            guessList = list(guess)
+            if guessList[0] == "0" or len(guessList) != 4 or duplicateCheck(guessList) is False or guess.isnumeric() is False:
+                numberIncorrect
+                print("Incorrect entry, please try again")
+            else:
+                numberIncorrect is False
         return guessList       
 
     def compareInput(guessed: list, given: list) -> list:
@@ -43,26 +57,26 @@ Let's play a bulls and cows game.\n
                     indirect += 1
         return [direct, indirect]
 
+    def stringMaker(count: int, word: str) -> str:
+            if count == 1:
+                countString = (f"1 {word}")
+            if count == 0 or count == 2 or count == 3:
+                countString = (f"{count} {word}s")
+            return countString
+
         
-    comparator = numberGeneration()
+    comparator = digitSelection()
     tries = 0
     gameOn = True
-
     while gameOn:
         result = compareInput(defineNumber(), comparator)
         tries += 1
         bulls = result[0]
         cows = result[1]
         if bulls != 4:
-            if bulls == 1:
-                bullstring = "1 bull"
-            elif bulls == 0 or bulls == 2 or bulls == 3:
-                bullstring = (f"{bulls} bulls")
-            if cows == 1:
-                cowstring = "1 cow"
-            elif cows == 0 or cows == 2 or cows == 3: 
-                cowstring = (f"{cows} cows")
-            print(f"{bullstring}, {cowstring}")
+            a = stringMaker(bulls, "bull")
+            b = stringMaker(cows, "cow")
+            print(f"{a}, {b}")
         elif bulls == 4:
             print(f"Correct, you've guessed the right number in {tries} guesses!")
             if tries < 5:
@@ -71,7 +85,7 @@ Let's play a bulls and cows game.\n
                 print("That is average")
             else:
                 print("Not so good")
-            gameOn == False
+            gameOn is False
             break
         
 if __name__ == "__main__":
