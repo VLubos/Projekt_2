@@ -38,9 +38,18 @@ Let's play a bulls and cows game.\n
         while numberIncorrect:
             guess = input(f"Enter a number:\n{separator}\n>>> ")
             guessList = list(guess)
-            if guessList[0] == "0" or len(guessList) != 4  or duplicateCheck(guessList) is False or guess.isnumeric() is False:
-                numberIncorrect
-                print("Incorrect entry, please try again")
+            if guessList[0] == "0":
+                numberIncorrect = True
+                print("Incorrect entry, your entry should not start with 0, please try again")
+            elif len(guessList) != 4:
+                numberIncorrect = True
+                print("Incorrect entry, your entry does not contains exactly 4 digits, please try again")
+            elif duplicateCheck(guessList) is False:
+                numberIncorrect = True
+                print("Incorrect entry, your entry contains a repeated digit, please try again")
+            elif guess.isnumeric() is False:
+                numberIncorrect = True
+                print("Incorrect entry, your entry contains non-numeric characters, please try again")
             else:
                 numberIncorrect = False
         return guessList       
@@ -59,11 +68,11 @@ Let's play a bulls and cows game.\n
     def stringMaker(count: int, word: str) -> str:
         if count == 1:
             countString = (f"1 {word}")
-        elif count == 0 or count == 2 or count == 3:
+        else:
             countString = (f"{count} {word}s")
         return countString
 
-        
+     
     comparator = digitSelection()
     tries = 0
     gameOn = True
@@ -85,7 +94,7 @@ Let's play a bulls and cows game.\n
                 print("That is average")
             else:
                 print("Not so good")
-            gameOn is False
+            gameOn = False
             break
         
 if __name__ == "__main__":
